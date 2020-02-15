@@ -1,2 +1,2 @@
 # stdedit
-edit standard input
+Edit from standard input then output result to standard out
