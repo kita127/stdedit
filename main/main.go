@@ -2,11 +2,11 @@ package main
 
 import (
 	"fmt"
-	_ "github.com/kita127/stdedit"
-	"io"
+	"github.com/mattn/go-tty"
 	"io/ioutil"
 	"log"
 	"os"
+	"os/exec"
 )
 
 func main() {
@@ -27,22 +27,34 @@ func main() {
 		log.Fatal(err)
 	}
 
+	tty, err := tty.Open()
+	if err != nil {
+		log.Fatal("tty error : ", err)
+	}
+	defer tty.Close()
+	cmd := exec.Command("vi", tmpfile.Name())
+	cmd.Stdin = tty.Input()
+	cmd.Stdout = tty.Output()
+	cmd.Stderr = tty.Output()
+	if err := cmd.Run(); err != nil {
+		log.Fatal("abort renames : ", err)
+	}
+
 	readFile, err := os.Open(tmpfile.Name())
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer readFile.Close()
 
-	output := make([]byte, size)
-	if size, err = readFile.Read(output); err == io.EOF {
-		log.Fatal(size, err)
+	buf := make([]byte, 1024)
+	for {
+		n, err := readFile.Read(buf)
+		if n == 0 {
+			break
+		}
+		if err != nil {
+			log.Fatal(size, err)
+		}
+		fmt.Print(string(buf))
 	}
-
-	if err := readFile.Close(); err != nil {
-		log.Fatal(err)
-	}
-
-	// fmt.Printf("file path : %s\n", tmpfile.Name())
-	// fmt.Printf("file input : %s\n", string(output))
-	//edited := stdedit.Edit(body)
-	fmt.Println(string(output))
 }
