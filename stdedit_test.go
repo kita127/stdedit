@@ -14,6 +14,10 @@ func TestStdedit(t *testing.T) {
 			input:  []byte("hoge"),
 			expect: []byte("hoge"),
 		},
+		{
+			input:  []byte("ほげほげ"),
+			expect: []byte("ほげほげ"),
+		},
 	}
 
 	for _, tc := range testTable {
