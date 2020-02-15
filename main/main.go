@@ -18,8 +18,7 @@ func main() {
 	}
 	defer os.Remove(tmpfile.Name()) // clean up
 
-	var size int
-	if size, err = tmpfile.Write(input); err != nil {
+	if _, err = tmpfile.Write(input); err != nil {
 		log.Fatal(err)
 	}
 
@@ -37,24 +36,13 @@ func main() {
 	cmd.Stdout = tty.Output()
 	cmd.Stderr = tty.Output()
 	if err := cmd.Run(); err != nil {
-		log.Fatal("abort renames : ", err)
+		log.Fatal("abort edit : ", err)
 	}
 
-	readFile, err := os.Open(tmpfile.Name())
+	output, err := ioutil.ReadFile(tmpfile.Name())
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer readFile.Close()
 
-	buf := make([]byte, 1024)
-	for {
-		n, err := readFile.Read(buf)
-		if n == 0 {
-			break
-		}
-		if err != nil {
-			log.Fatal(size, err)
-		}
-		fmt.Print(string(buf))
-	}
+	fmt.Print(string(output))
 }
