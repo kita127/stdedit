@@ -12,17 +12,17 @@ import (
 func main() {
 	input, _ := ioutil.ReadAll(os.Stdin)
 
-	tmpfile, err := ioutil.TempFile("", "stdedit-temp")
+	f, err := ioutil.TempFile("", "stdedit-temp")
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer os.Remove(tmpfile.Name()) // clean up
+	defer os.Remove(f.Name()) // clean up
 
-	if _, err = tmpfile.Write(input); err != nil {
+	if _, err = f.Write(input); err != nil {
 		log.Fatal(err)
 	}
 
-	if err := tmpfile.Close(); err != nil {
+	if err := f.Close(); err != nil {
 		log.Fatal(err)
 	}
 
@@ -31,7 +31,7 @@ func main() {
 		log.Fatal(err)
 	}
 	defer tty.Close()
-	cmd := exec.Command("vi", tmpfile.Name())
+	cmd := exec.Command("vi", f.Name())
 	cmd.Stdin = tty.Input()
 	cmd.Stdout = tty.Output()
 	cmd.Stderr = tty.Output()
@@ -39,7 +39,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	output, err := ioutil.ReadFile(tmpfile.Name())
+	output, err := ioutil.ReadFile(f.Name())
 	if err != nil {
 		log.Fatal(err)
 	}
