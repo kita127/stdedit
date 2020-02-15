@@ -16,7 +16,10 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer os.Remove(f.Name()) // clean up
+	defer func() {
+		f.Close()
+		os.Remove(f.Name()) // clean up
+	}()
 
 	if _, err = f.Write(input); err != nil {
 		log.Fatal(err)
