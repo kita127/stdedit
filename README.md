@@ -1,0 +1,2 @@
+# stdedit
+edit standard input
