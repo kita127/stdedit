@@ -28,7 +28,7 @@ func main() {
 
 	tty, err := tty.Open()
 	if err != nil {
-		log.Fatal("tty error : ", err)
+		log.Fatal(err)
 	}
 	defer tty.Close()
 	cmd := exec.Command("vi", tmpfile.Name())
@@ -36,7 +36,7 @@ func main() {
 	cmd.Stdout = tty.Output()
 	cmd.Stderr = tty.Output()
 	if err := cmd.Run(); err != nil {
-		log.Fatal("abort edit : ", err)
+		log.Fatal(err)
 	}
 
 	output, err := ioutil.ReadFile(tmpfile.Name())
