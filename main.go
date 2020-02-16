@@ -34,7 +34,12 @@ func main() {
 		log.Fatal(err)
 	}
 	defer tty.Close()
-	cmd := exec.Command("vi", f.Name())
+
+	editor := os.Getenv("STDEDIT")
+	if editor == "" {
+		editor = "vim"
+	}
+	cmd := exec.Command(editor, f.Name())
 	cmd.Stdin = tty.Input()
 	cmd.Stdout = tty.Output()
 	cmd.Stderr = tty.Output()
