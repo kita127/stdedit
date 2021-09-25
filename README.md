@@ -4,8 +4,8 @@
 
 ## Description
 
-Edit stdin with your favorite editor and the result is out to stdout.+
-It uses the editor provided via its argument or the environment variable `$STDEDIT` (Default is `vim`).+
+Edit stdin with your favorite editor and the result is out to stdout.<br>
+It uses the editor provided via its argument or the environment variable `$STDEDIT` (Default is `vim`).<br>
 GUI editor is not supported.
 
 ## Installation
@@ -20,7 +20,7 @@ go get github.com/kita127/stdedit
 echo hello | stdedit vim | pbcopy
 ```
 
-This opens the editor and puts "hello".+
+This opens the editor and puts "hello".<br>
 After you save changes and close the editor, the results are copied into your clipboard.
 
 You can specify which editor to use via `$STDEDIT`.
