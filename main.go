@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"github.com/mattn/go-tty"
 	"io/ioutil"
@@ -10,6 +11,7 @@ import (
 )
 
 func main() {
+	flag.Parse()
 	input, _ := ioutil.ReadAll(os.Stdin)
 
 	f, err := ioutil.TempFile("", "stdedit-temp")
@@ -35,9 +37,12 @@ func main() {
 	}
 	defer tty.Close()
 
-	editor := os.Getenv("STDEDIT")
+	editor := flag.Arg(0)
 	if editor == "" {
-		editor = "vim"
+		editor = os.Getenv("STDEDIT")
+		if editor == "" {
+			editor = "vim"
+		}
 	}
 	cmd := exec.Command(editor, f.Name())
 	cmd.Stdin = tty.Input()
