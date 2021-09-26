@@ -1,19 +1,37 @@
 # stdedit
+
 `stdedit` is a tool which edits standard input with your favorite editor.
 
 ## Description
-Edits standard input then output result to standard out.<br>
-It uses an editor that configured to `$STDEDIT`(Default editor is `vim`).<br>
-Not supported GUI editor.<br>
+
+Edit stdin with your favorite editor and the result is out to stdout.<br>
+It uses the editor provided via its argument or the environment variable `$STDEDIT` (Default is `vim`).<br>
+GUI editor is not supported.
 
 ## Installation
-`go get github.com/kita127/stdedit`
+
+```sh
+go get github.com/kita127/stdedit
+```
 
 ## Usage
-`echo hello | stdedit | pbcopy`<br>
 
-Then It opens editor and puts "hello".<br>
-Next, you edited ,saved and closed, then the results are copied into your clipboard.<br>
+```sh
+echo hello | stdedit vim | pbcopy
+```
+
+This opens the editor and puts "hello".<br>
+After you save changes and close the editor, the results are copied into your clipboard.
+
+You can specify which editor to use via `$STDEDIT`.
+
+```sh
+export STDEDIT=vim
+echo hello | stdedit | pbcopy
+```
+
+The argument is prioritized over the environment variable.
 
 ## License
-This software is released under the MIT License, see LICENSE.
+
+This software is released under the MIT License, see [LICENSE](LICENSE).
